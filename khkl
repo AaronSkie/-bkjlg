@@ -1,0 +1,72 @@
+if game.PlaceId == 155615604 then
+    local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+    local Window = Library.CreateLib("Prison Life", "Serpent")
+    
+    -- MAIN -- 
+    local Main = Window:NewTab("Main")
+    local MainSection = Main:NewSection("Credits: AaronS#1454")
+    MainSection:NewDropdown("Give Weapon", "Gives you a weapon.", {"M9", "Remington 870", "AK-47"}, function(v)
+        local A_1 = game:GetService("Workspace")["Prison_ITEMS"].giver[v].ITEMPICKUP
+        local Event = game:GetService("Workspace").Remote.ItemHandler
+        Event:InvokeServer(A_1)
+    end)     
+
+
+    
+
+    
+    MainSection:NewDropdown("Gun Mod", "Makes your gun OP.", {"M9", "Remington 870", "AK-47"}, function(v)
+        local module = nil 
+        if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(v) then
+            module = require(game:GetService("Players").LocalPlayer.Backpack[v].GunStates)
+        elseif game:GetService("Players").LocalPlayer.Character:FindFirstChild(v) then
+            module = require(game:GetService("Players").LocalPlayer.Character[v].GunStates)
+        end
+        if module ~= nil then
+            module["MaxAmmo"] = math.huge
+            module["CurrentAmmo"] = math.huge
+            module["StoredAmmo"] = math.huge
+            module["FireRate"] = 0.000001
+            module["Spread"] = 0
+            module["Range"] = math.huge
+            module["Bullets"] = 10
+            module["ReloadTime"] = 0.000001
+            module["AutoFire"] = true
+        end
+    end)
+    MainSection:NewButton("Click TP", "B To Teleport", function(v)
+    end)
+    plr = game.Players.LocalPlayer
+ 
+	hum = plr.Character.HumanoidRootPart
+ 
+	mouse = plr:GetMouse()
+ 
+ 
+ 
+	mouse.KeyDown:connect(function(key)
+ 
+	if key == "b" then
+ 
+	if mouse.Target then
+ 
+	hum.CFrame = CFrame.new(mouse.Hit.x, mouse.Hit.y + 5, mouse.Hit.z)
+ 	end
+ 
+end
+end)
+
+MainSection:NewKeybind("Toggle UI", "F to toggle UI", Enum.KeyCode.F, function(v)
+    Library:ToggleUI(v)
+end)
+
+    -- Player --
+    local Player = Window:NewTab("Player")
+    local PlayerSection = Player:NewSection("Credits: AaronS#1454")
+    PlayerSection:NewSlider("Walkspeed", "Adjust Your Walkspeed.", 500, 16, function(v) -- 500 (MaxValue) / 16(MinValue)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = v
+    end)
+    PlayerSection:NewSlider("Jumppower", "Adjust Your Jumppower.", 500, 50, function(v) -- 500 (MaxValue) / 50(MinValue)
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = v
+    end)
+end
